@@ -1,0 +1,70 @@
+(* Some useful links:
+
+Mathematical formalisation using cow: https://people.debian.org/~schepler/coqtut.v.html#htoc5
+Finite groups representation theory with coq: https://hal.inria.fr/inria-00377431/file/main.pdf
+Informal group theorems that need formalisation: http://dogschool.tripod.com/housekeeping.html
+*)
+
+(* The set of the group. *)
+Parameter G : Set.
+
+(* The binary operator. *)
+Parameter f : G -> G -> G.
+
+(* The group identity. *)
+Parameter e : G.
+
+(* The inverse operator. *)
+Parameter i : G -> G.
+
+(* For readability, we use infix <+> to stand for the binary operator. *)
+Infix "<+>" := f (at level 50, left associativity).
+
+(* The operator [f] is associative. *)
+Axiom assoc : forall a b c, a <+> b <+> c = a <+> (b <+> c).
+
+(* [e] is the right-identity for all elements [a] *)
+Axiom id_r : forall a, a <+> e = a.
+
+(* [i a] is the right-inverse of [a]. *)
+Axiom inv_r : forall a, a <+> i a = e.
+
+(*Here we start proving some theorems*)
+
+(* The identity [e] is unique. *)
+Axiom unique_id : forall a, a <+> a = a -> a = e.
+Proof.
+R
+
+(* [i a] is the left-inverse of [a]. *)
+Axiom inv_l : forall a, i a <+> a = e.
+  
+(* [e] is the left-identity. *)
+Axiom id_l : forall a, e <+> a = a.
+
+(* [x] can be cancelled on the right. *)
+Axiom cancel_r : forall a b x, a <+> x = b <+> x -> a = b.
+
+(* [x] can be cancelled on the left. *)
+Axiom cancel_l: forall a b x, x <+> a = x <+> b -> a = b.
+
+(* The left identity is unique. *)
+Axiom e_uniq_l : forall a p, p <+> a = a -> p = e.
+
+(* The left inverse is unique. *)
+Axiom inv_uniq_l : forall a b, a <+> b = e -> a = i b.
+
+(* The left identity is unique. *)
+Axiom e_uniq_r : forall a p, a <+> p = a -> p = e.
+
+(* The right inverse is unique. *)
+Axiom inv_uniq_r : forall a b, a <+> b = e -> b = i a.
+
+(* The inverse operator distributes over the group operator. *)
+Axiom inv_distr : forall a b, i (a <+> b) = i b <+> i a.
+
+(* The inverse of an inverse produces the original element. *)
+Axiom double_inv : forall a, i (i a) = a.
+
+(* The identity is its own inverse. *)
+Axiom id_inv : i e = e.
